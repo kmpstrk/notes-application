@@ -2,7 +2,7 @@
 interface IconButtonProps{
     type : 'edit' | 'delete';
     className? : string;
-    onClick : ()=> void;
+    onClick? : (any:any)=> void;
     tooltip? : string;
     disabled? : boolean;
 }

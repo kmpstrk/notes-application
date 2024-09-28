@@ -1,5 +1,5 @@
 import Note from "./Note";
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useSubscription } from '@apollo/client';
 
 
 const GET_NOTES = gql`
@@ -14,14 +14,36 @@ const GET_NOTES = gql`
 
 
 
+const NOTE_ADDED = gql`
+    subscription NoteAdded {
+        noteAdded {
+            id
+            content
+            createdAt
+        }
+    }
+`;
+
+
 const NoteList : React.FC = ()=>{
 
-    const { loading, error, data } = useQuery(GET_NOTES);
+    const { loading, error, data, refetch } = useQuery(GET_NOTES);
+    const { data: subscriptionData } = useSubscription(NOTE_ADDED);
+
+    const newNote = subscriptionData?.noteAdded;
+    if(newNote){
+      refetch();
+    }
+
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) {
+      console.error(error.message);
+      return <p>Oops, loading error</p>
+    }
 
 
+    
     return(
         <div className="note-list-container">
             <ul>

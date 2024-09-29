@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 const noteSchema = new mongoose.Schema({
     content: String,
     createdAt: { type: Date, default: Date.now },
+    color: String,
 });
 const Note = mongoose.model('Note', noteSchema);
 
@@ -33,6 +34,7 @@ const schema = buildSchema(`
         id: ID!
         content: String!
         createdAt: String!
+        color : String
     }
 
     type Query {
@@ -40,7 +42,7 @@ const schema = buildSchema(`
     }
 
     type Mutation {
-        addNote(content: String!): Note
+        addNote(content: String!, color:String): Note
         deleteNote(id: ID!): Boolean
         updateNote(id: ID!, content: String!): Note
     }
@@ -53,9 +55,8 @@ const schema = buildSchema(`
 
 const root = {
     notes: async () => await Note.find(),
-    addNote: async ({ content }) => {
-        console.log('addNote resolver called with content:', content);
-        const newNote = new Note({ content });
+    addNote: async ({ content, color }) => {
+        const newNote = new Note({ content, color });
         await newNote.save();
         console.log('Publishing new note:', newNote);
         const published = pubsub.publish('NOTE_ADDED', { noteAdded: newNote });

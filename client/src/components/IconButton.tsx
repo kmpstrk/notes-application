@@ -13,7 +13,7 @@ const IconButton : React.FC <IconButtonProps> = ({type, className, onClick, tool
     return(
         <button  
             type="button"
-            className={`btn btn-light ${className}`}
+            className={`btn ${className}`}
             onClick={onClick}
             disabled={disabled}
             data-bs-toggle="tooltip"

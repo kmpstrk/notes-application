@@ -1,0 +1,140 @@
+
+
+/* Adds a shadow and smooth transition effect on hover */
+.shadow-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .shadow-hover:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow on hover */
+    transform: translateY(-1px); /* Slight lift effect */
+  }
+
+
+
+
+
+.card-footer{
+    background-color: #ffffff00 !important;
+}
+.card-header{
+    background-color: #ffffff00 !important;
+}
+
+  /* Make buttons invisible initially */
+.invisible-footer .btn-icon {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  /* Show buttons when the card is hovered */
+  .note-container:hover .invisible-footer .btn-icon {
+    opacity: 1;
+  }
+  
+  
+
+  .text-smaller{
+    font-size: 0.75rem;
+    font-weight: 650;
+    color:rgb(133, 133, 133);
+  }
+
+  .border-custom-note{
+    border: 1px solid rgb(218, 218, 218);
+  }
+
+.note-container{
+    min-height: 180px;
+    max-height: 200px;
+    overflow: hidden; 
+}
+
+
+.custom-add-btn{
+    border-color: rgb(24, 24, 24) !important;
+    color: rgb(24, 24, 24) !important;
+}
+
+.custom-add-btn:hover{
+    background-color: rgb(24, 24, 24) !important;
+    color: white !important;
+}
+
+
+
+.btn-custom:hover{
+    background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+
+
+
+/* Modal Overlay */
+.modal.show {
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
+
+/* Custom Modal Styles */
+.custom-modal {
+    background-color: #ffffff; /* White background for modal */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+}
+
+/* Modal Header */
+.modal-header {
+    border-bottom: none; /* Remove border */
+    display: flex; /* Align items */
+    justify-content: space-between; /* Space between header items */
+    align-items: center; /* Center items vertically */
+    padding: 20px; /* Add some padding */
+}
+
+/* Close Button */
+.modal-header .close {
+    background: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    font-size: 24px; /* Larger font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    color: #333; /* Dark color for close button */
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 20px; /* Add padding */
+    font-size: 16px; /* Font size */
+    color: #555; /* Dark grey text */
+}
+
+/* Modal Footer */
+.modal-footer {
+    border-top: none; /* Remove border */
+    padding: 15px; /* Add padding */
+    display: flex; /* Align footer items */
+    justify-content: flex-end; /* Align to right */
+}
+
+/* Button Styles */
+.modal-footer .btn-secondary {
+    background-color: #007bff; /* Primary blue */
+    border: none; /* Remove border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 0; /* Remove margin for small screens */
+        width: 100%; /* Full width */
+        max-width: none; /* No max width */
+    }
+}

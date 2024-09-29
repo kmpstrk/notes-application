@@ -29,10 +29,11 @@ interface NoteProps{
     content : string;
     createdAt : string;
     id : string;
+    color? : string;
 }
 
 
-const Note : React.FC <NoteProps> = ({content, createdAt, id})=>{
+const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
     const [deleteNote, {loading, error}] = useMutation(DELETE_NOTE);
     const [editedContent, setEditedContent] = useState<string>(content);
     const [updateNote] = useMutation(UPDATE_NOTE);
@@ -91,17 +92,24 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id})=>{
         }
     }
 
-    
     return (
-        <div className="note-container">
-            <p className="note-content">{content}</p>
-            <FormattedDate date = {createdAt} />
-            <IconButton type = 'edit' className = 'edit-btn' onClick= {openEditModal} tooltip = 'Edit note'/>
-            <IconButton type = 'delete' className = 'edit-btn' onClick= {handleDelete} tooltip = 'Delete note'/>
+            <div className= {`note-container card shadow-sm border-0 color-${color}`}>
+                <div className="card-header border-0">
+                    <FormattedDate date = {createdAt} />
+                </div>
+                <div className="card-body">
+                    <p className="note-content card-text">{content}</p>
 
-            <Modal isOpen = {isModalOpen} onClose={closeEditModal} children = {childrenOfEditModal}/>
+                </div>
 
-        </div>
+                <div className='card-footer d-flex align-items-center  border-0 invisible-footer justify-content-end'>
+                        <IconButton type = 'edit' className = 'edit-btn btn-icon ms-2 btn-custom' onClick= {openEditModal} tooltip = 'Edit note'/>
+                        <IconButton type = 'delete' className = 'delete-btn btn-icon ms-2 btn-custom' onClick= {handleDelete} tooltip = 'Delete note'/>                   
+                </div>
+
+                <Modal isOpen = {isModalOpen} onClose={closeEditModal} children = {childrenOfEditModal}/>
+
+            </div>
     )
 }
 

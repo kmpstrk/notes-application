@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Note from "./Note";
 import { useQuery, gql, useSubscription } from '@apollo/client';
 
@@ -8,6 +9,7 @@ const GET_NOTES = gql`
       id
       content
       createdAt
+      color
     }
   }
 `;
@@ -20,6 +22,7 @@ const NOTE_ADDED = gql`
             id
             content
             createdAt
+            color
         }
     }
 `;
@@ -44,18 +47,14 @@ const NoteList : React.FC = ()=>{
 
 
     
-    return(
-        <div className="note-list-container">
-            <ul>
-                {data?.notes?.map((note: any) => (
-                    <li key={note.id}>
-                        <Note content={note.content} createdAt={note.createdAt} id={note.id} />
-                    </li>
-        
-                ))}
-            </ul>
-            
-        </div>
+    return (
+      <div className="note-list-container row g-3"> 
+        {data?.notes?.slice().reverse().map((note: any) => (
+          <div key={note.id} className="col-12 col-md-3">
+            <Note content={note.content} createdAt={note.createdAt} id={note.id} color={note.color}/>
+          </div>
+        ))}
+      </div>
     )
 }
 

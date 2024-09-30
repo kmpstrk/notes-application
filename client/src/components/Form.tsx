@@ -46,11 +46,27 @@ const Form : React.FC = ()=> {
         if (textareaRef.current) textareaRef.current.value = '';
     }
 
+    const adjustTextareaHeight = () => {
+        const textarea = textareaRef.current;
+
+        if (textarea) {
+            textarea.style.height = "auto";
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 350)}px`;
+        }
+    };
+
+    const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNote(e.target.value);
+        adjustTextareaHeight(); 
+    };
+
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>)=>{
         if (e.key === 'Enter' && !e.shiftKey) { 
             e.preventDefault(); 
             handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+        } else {
+            adjustTextareaHeight(); 
         }
     }
 
@@ -62,10 +78,11 @@ const Form : React.FC = ()=> {
                     <textarea 
                         id="note" name="note"
                         ref = {textareaRef}
-                        className="form-control"
+                        className="form-control shadow-hover"
                         placeholder="What's on your mind?"
-                        onChange = {e => setNote(e.target.value)}
+                        onChange = {handleInput} 
                         onKeyDown={handleKeyDown}
+                        onBlur={adjustTextareaHeight}
                         >
                     </textarea>
                 </div>

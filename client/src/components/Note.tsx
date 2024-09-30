@@ -2,8 +2,7 @@ import FormattedDate from "./FormattedDate";
 import IconButton from "./IconButton";
 import { useMutation, gql } from '@apollo/client';
 import Modal from "./Modal";
-import Button from "./Button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 
 
@@ -37,7 +36,10 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
     const [deleteNote, {loading, error}] = useMutation(DELETE_NOTE);
     const [editedContent, setEditedContent] = useState<string>(content);
     const [updateNote] = useMutation(UPDATE_NOTE);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
 
     if(loading) return <p>Loading...</p>
     if(error) {
@@ -46,13 +48,27 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
     }
 
 
-    const openEditModal = ()=>{
-        setIsModalOpen(true);
+    const adjustTextareaHeight = ()=>{
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = "auto";
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 500)}px`;
+        }
     }
 
-    const closeEditModal = ()=>{
-        setIsModalOpen(false);
+
+    const openEditModal = ()=>{
+        setIsEditModalOpen(true);
+        setTimeout(() => {
+            adjustTextareaHeight(); 
+        }, 0);
     }
+
+    const closeEditModal = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setIsEditModalOpen(false);
+    }
+
 
     const handleSavingEditModal = (e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
@@ -69,18 +85,32 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
 
     const childrenOfEditModal = 
         <div>
-            <form onSubmit={handleSavingEditModal}>
+            <FormattedDate date = {createdAt} className='pb-1'/>
+            <form>
                 <label htmlFor="edit-note"></label>
                 <textarea 
                     id="edit-note" 
                     name="edit-note"
+                    ref = {textareaRef}
                     value = {editedContent}
-                    onChange={(e)=>setEditedContent(e.target.value)}>
+                    onChange={(e)=>setEditedContent(e.target.value)}
+                    onInput={adjustTextareaHeight} 
+                    className= "form-edit border-0"
+                    >
                 </textarea>
-                <Button text='Save' type='submit'/>
             </form>
         </div>
 
+
+    const openDeleteModal = ()=>{
+        setIsDeleteModalOpen(true);
+    }
+
+    const closeDeleteModal = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setIsDeleteModalOpen(false);
+    }
+        
 
 
     const handleDelete = async ()=>{
@@ -93,7 +123,10 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
     }
 
     return (
-            <div className= {`note-container card shadow-sm border-0 color-${color}`}>
+            <div 
+                className= {`note-container card shadow-sm border-0 color-${color}`}
+                onClick={openEditModal}
+            >
                 <div className="card-header border-0">
                     <FormattedDate date = {createdAt} />
                 </div>
@@ -102,12 +135,34 @@ const Note : React.FC <NoteProps> = ({content, createdAt, id, color})=>{
 
                 </div>
 
-                <div className='card-footer d-flex align-items-center  border-0 invisible-footer justify-content-end'>
-                        <IconButton type = 'edit' className = 'edit-btn btn-icon ms-2 btn-custom' onClick= {openEditModal} tooltip = 'Edit note'/>
-                        <IconButton type = 'delete' className = 'delete-btn btn-icon ms-2 btn-custom' onClick= {handleDelete} tooltip = 'Delete note'/>                   
+                <div 
+                    className='card-footer d-flex align-items-center  border-0 invisible-footer justify-content-end'
+                    onClick={(e) => e.stopPropagation()}>                      
+                        <IconButton type = 'delete' 
+                            className = 'delete-btn btn-icon ms-2 btn-custom' 
+                            onClick= {(e) => {
+                                e.stopPropagation();
+                                openDeleteModal();
+                            }}
+                            tooltip = 'Delete note'/>                   
                 </div>
 
-                <Modal isOpen = {isModalOpen} onClose={closeEditModal} children = {childrenOfEditModal}/>
+                <Modal 
+                    isOpen = {isEditModalOpen} 
+                    onClose={closeEditModal} 
+                    children = {childrenOfEditModal}
+                    onSubmit={handleSavingEditModal}
+                    buttonText="Save"
+                    specialColor= {color}
+                />
+
+                <Modal 
+                    isOpen = {isDeleteModalOpen} 
+                    onClose={closeDeleteModal} 
+                    children = {<p className="text-center">Are you sure you want to delete this note?</p>}
+                    onSubmit={handleDelete}
+                    buttonText="Delete"
+                />
 
             </div>
     )

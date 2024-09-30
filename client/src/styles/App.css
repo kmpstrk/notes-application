@@ -1,25 +1,6 @@
-.bg-light-green {
-    background-color: #adc698;
-  }
-
-
-  .bg-dark-green{
-    background-color: #003b36;
-  }
-
-  .bg-orange{
-    background-color: #e98a15;
-  }
-
-  .bg-light-violet{
-    background-color: #ece5f0;
-  }
-
-
-  .bg-light{
-    background-color: #fff9d9;
-  }
-
+.primary{
+  background-color: rgb(24, 24, 24);
+}
 
 
   

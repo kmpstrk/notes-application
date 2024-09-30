@@ -3,9 +3,12 @@ interface ModalProps{
     children : React.ReactNode;
     isOpen: boolean;
     onClose: ()=>void;
+    onSubmit: (any:any)=>void;
+    buttonText: string;
+    specialColor?: string;
 }
 
-const Modal : React.FC <ModalProps> = ({isOpen, onClose, children })=>{
+const Modal : React.FC <ModalProps> = ({isOpen, onClose, children, onSubmit, buttonText, specialColor })=>{
 
     if (!isOpen) return null;
 
@@ -13,7 +16,7 @@ const Modal : React.FC <ModalProps> = ({isOpen, onClose, children })=>{
             <div className="modal show" style={{ display: 'block' }}>
                 <div className="modal-dialog">
                     <div className="modal-content custom-modal">
-                        <div className="modal-header">
+                        <div className= {`modal-header border-0 color-${specialColor}`}>
                             <button type="button" className="close" onClick={onClose}>
                                 <span>&times;</span>
                             </button>
@@ -21,9 +24,9 @@ const Modal : React.FC <ModalProps> = ({isOpen, onClose, children })=>{
                         <div className="modal-body">
                             {children}
                         </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={onClose}>
-                                Close
+                        <div className="modal-footer border-0">
+                            <button type="button" className="btn btn-primary" onClick={onSubmit}>
+                                {buttonText}
                             </button>
                         </div>
                     </div>

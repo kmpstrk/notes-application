@@ -1,17 +1,20 @@
 import './styles/App.css';
 import './styles/components.css'
-import NoteList from './components/NotesList';
-import Form from './components/Form';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-
-      <div className="container">
-        <Form />
-        <NoteList />
-        
-      </div>
-
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/" element={<ProtectedRoute component={MainPage} />} />
+      </Routes>
+    </Router>
    
   );
 }

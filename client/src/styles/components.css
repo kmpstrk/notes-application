@@ -4,7 +4,7 @@
   
   .shadow-hover:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-    transform: translateY(-1px); 
+ 
   }
 
 
@@ -54,21 +54,25 @@
     text-overflow: ellipsis;
 }
 
-
-.custom-add-btn{
-    border-color: rgb(24, 24, 24) !important;
-    color: rgb(24, 24, 24) !important;
-}
-
-.custom-add-btn:hover{
+.btn-primary{
     background-color: rgb(24, 24, 24) !important;
     color: white !important;
+    border-color: rgb(24, 24, 24) !important; 
+}
+
+.btn-primary:hover{
+    background-color: rgb(51, 51, 51) !important;
 }
 
 
+.btn-secondary{
+    color: rgb(24, 24, 24) !important;
+    border-color: rgb(24, 24, 24) !important; 
+    background-color: white !important;
+}
 
-.btn-custom:hover{
-    background-color: rgba(255, 255, 255, 0.5) !important;
+.btn-secondary:hover{
+    background-color: rgb(232, 232, 232) !important;
 }
 
 
@@ -151,6 +155,7 @@ textarea.form-control{
     resize: none;
     transition: all 0.5s ease;
 }
+
 
 
 .form-edit{

@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import Button from "./Button";
 import { useMutation, gql } from "@apollo/client";
 import {COLORS} from '../colors';
+import Loading from "./Loading";
+import Alert from "./Alert";
 
 
 const ADD_NOTE = gql`
@@ -16,14 +18,10 @@ const ADD_NOTE = gql`
 
 const Form : React.FC = ()=> {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const [addNote, {loading, error}] = useMutation(ADD_NOTE);
+    const [addNote, {loading}] = useMutation(ADD_NOTE);
     const [note, setNote] = useState<string>('');
+    const [errorFromBack, setErrorFromBack] = useState<string>('');
 
-    if (loading) return <p>Loading...</p>;
-    if (error) {
-      console.error(error.message);
-      return <p>Oops, an error occured</p>;
-    }
 
 
     const getRandomColor = () => {
@@ -37,10 +35,13 @@ const Form : React.FC = ()=> {
         e.preventDefault();
         if (note.trim() !== '') {
             try {
+                console.log(note);
+                console.log(localStorage);
                 addNote({ variables: { content: note, color: getRandomColor()} });
-                window.location.reload();
+                //window.location.reload();
             } catch (error) {
                 console.error('Error:', error);
+                setErrorFromBack('Error occured. Try to reload please');
             }
         }
         if (textareaRef.current) textareaRef.current.value = '';
@@ -48,7 +49,6 @@ const Form : React.FC = ()=> {
 
     const adjustTextareaHeight = () => {
         const textarea = textareaRef.current;
-
         if (textarea) {
             textarea.style.height = "auto";
             textarea.style.height = `${Math.min(textarea.scrollHeight, 350)}px`;
@@ -86,12 +86,15 @@ const Form : React.FC = ()=> {
                         >
                     </textarea>
                 </div>
+
                 <div className="d-flex justify-content-end mb-4">
-                    <Button className='btn btn-outline-primary custom-add-btn' text='Add note' type='submit'/>
+                    <Button className='btn btn-secondary' text='Add note' type='submit'/>
                 </div>
-                
-            
+
             </form>
+
+            {loading ? <Loading/> : errorFromBack && errorFromBack !== '' && <Alert text={errorFromBack} color="danger" />}
+
         </div>
     )
 }
